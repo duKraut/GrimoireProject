@@ -17,10 +17,10 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->integer('min_deck_size')->default(60);
             $table->integer('max_deck_size')->nullable();
-            $table->integer('sideboarde_size')->default(15);
+            $table->integer('sideboard_size')->default(15);
             $table->integer('copy_limit')->default(4);
             $table->boolean('is_singleton')->default(false);
-            $table->json('format_rules')->nullable();
+            $table->enum('platform', ['fisical', 'digital', 'both'])->default('fisical');
             $table->timestamps();
         });
     }
