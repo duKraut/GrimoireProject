@@ -16,9 +16,8 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('name');
             $table->foreignId('format_id')->constrained()->onDelete('cascade');
-            $table->text('description`')->nullable();
-            $table->foreignId('commander_card_id')->nullable()->constrained('cards')->onDelete('set null');
-            $table->json('color_identity')->nullable();
+            $table->text('description')->nullable();
+            $table->uuid('commander_scryfall_id');
             $table->timestamps();
         });
     }
