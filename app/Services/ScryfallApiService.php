@@ -26,13 +26,16 @@ class ScryfallApiService
             ]);
 
             if ($response->successful()) {
+                // Retorna a lista de cartas encontradas
                 return $response->json('data', []);
             }
 
+            // Se não encontrar nenhuma carta (404), retorna um array vazio
             if ($response->status() === 404) {
                 return [];
             }
 
+            // Para outros erros, loga e retorna vazio
             Log::error('Erro ao buscar cartas na API do Scryfall', [
                 'status' => $response->status(),
                 'response' => $response->body()

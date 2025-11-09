@@ -59,4 +59,20 @@ class User extends Authenticatable
             ->map(fn ($word) => Str::substr($word, 0, 1))
             ->implode('');
     }
+
+    /**
+     * Define o relacionamento "um-para-muitos" com as entradas da coleção.
+     */
+    public function collectionEntries(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(CollectionEntry::class);
+    }
+
+    /**
+     * Define o relacionamento "um-para-muitos" com os decks.
+     */
+    public function decks(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Deck::class);
+    }
 }

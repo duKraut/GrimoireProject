@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class DeckCard extends Model
+class CollectionEntry extends Model
 {
     use HasFactory;
 
@@ -15,9 +15,18 @@ class DeckCard extends Model
      * @var array
      */
     protected $fillable = [
-        'deck_id',
         'scryfall_id',
+        'user_id',
         'quantity',
-        'board',
+        'is_foil',
+        'condition',
     ];
+
+    /**
+     * Define o relacionamento "pertence-a" com o Utilizador.
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CollectionController;
+use App\Http\Controllers\DeckController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -18,6 +19,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/collection', [CollectionController::class, 'index'])->name('collection.index');
     Route::get('/collection/search', [CollectionController::class, 'search'])->name('collection.search');
+    Route::resource('decks', DeckController::class);
 });
 
 require __DIR__.'/auth.php';

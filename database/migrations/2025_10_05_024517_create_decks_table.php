@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('name');
             $table->foreignId('format_id')->constrained()->onDelete('cascade');
             $table->text('description')->nullable();
-            $table->uuid('commander_scryfall_id');
+            $table->uuid('commander_scryfall_id')->nullable();
             $table->timestamps();
         });
     }
