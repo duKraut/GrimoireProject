@@ -13,13 +13,19 @@ class DeckBuilder extends Component
 {
     // Propriedades para o Deck e a Busca
     public Deck $deck;
+
     public string $searchQuery = '';
+
     public array $searchResults = [];
+
     public string $searchTitle = '';
+
+    public ?string $errorMessage = null;
 
     // Propriedades para guardar as cartas do deck
     // Vamos usar a convenção de nomes do Laravel
     public $mainDeckCards;
+
     public $sideboardCards;
 
     /**
@@ -45,8 +51,8 @@ class DeckBuilder extends Component
         $allCardsDB = $repository->getForDeck($this->deck);
 
         // 2. Separa as cartas
-        $mainDeckEntries = $allCardsDB->where('board', 'main');
-        $sideboardEntries = $allCardsDB->where('board', 'side');
+        $mainDeckEntries = $allCardsDB->where('board', 'Main');
+        $sideboardEntries = $allCardsDB->where('board', 'Side');
 
         // 3. "Enriquece" cada carta com dados da API
         $this->mainDeckCards = $this->enrichCards($mainDeckEntries, $scryfallService);
@@ -65,10 +71,11 @@ class DeckBuilder extends Component
                 $enrichedCards[] = [
                     'entry_id' => $entry->id, // ID da nossa tabela deck_cards
                     'quantity' => $entry->quantity,
-                    'details' => $cardDetails // Todos os dados da API (nome, imagem, etc.)
+                    'details' => $cardDetails, // Todos os dados da API (nome, imagem, etc.)
                 ];
             }
         }
+
         return $enrichedCards;
     }
 
@@ -81,11 +88,9 @@ class DeckBuilder extends Component
         if (strlen($value) >= 3) {
             $this->searchResults = $scryfallService->searchCardsByName($value);
             $this->searchTitle = 'Resultados da Busca';
-        } 
-        elseif (empty($value)) { 
+        } elseif (empty($value)) {
             $this->fetchRecentCards($scryfallService); // Mostra recentes se a busca estiver vazia
-        }
-        else {
+        } else {
             $this->searchResults = [];
             $this->searchTitle = '';
         }
@@ -97,6 +102,8 @@ class DeckBuilder extends Component
      */
     public function addCard(string $scryfallId, string $board = 'main')
     {
+        $this->errorMessage = null;
+
         // 1. Usamos app() para obter o repositório, em vez de o injetar na assinatura
         $repository = app(DeckCardRepositoryInterface::class);
 
@@ -105,28 +112,28 @@ class DeckBuilder extends Component
         $details = [
             'scryfall_id' => $scryfallId,
             'quantity' => 1,
-            'board' => $board, // 'main' ou 'side'
+            'board' => $board === 'main' ? 'Main' : 'Side',
         ];
 
         try {
             // 3. O repositório é usado aqui
             $repository->addCard($this->deck, $details);
-            
+
             // 4. Recarrega a lista de cartas do deck (isto já estava correto)
             $this->loadDeckCards();
 
             // 5. Limpa a busca para uma UX melhor
             $this->searchQuery = '';
             $this->searchResults = [];
-            
+
             // Recarrega os "Lançamentos Recentes" (SE VOCÊ AINDA TIVER ESTA FUNÇÃO)
             if (method_exists($this, 'fetchRecentCards')) {
-                $this->fetchRecentCards(app(ScryfallApiService::class)); 
+                $this->fetchRecentCards(app(ScryfallApiService::class));
             }
 
         } catch (\Exception $e) {
-            Log::error('Erro ao adicionar carta ao deck: ' . $e->getMessage());
-            // TODO: Enviar um evento de erro para o frontend
+            Log::error('Erro ao adicionar carta ao deck: '.$e->getMessage());
+            $this->errorMessage = $e->getMessage();
         }
     }
 
@@ -142,5 +149,4 @@ class DeckBuilder extends Component
     {
         return view('livewire.deck-builder');
     }
-
 }

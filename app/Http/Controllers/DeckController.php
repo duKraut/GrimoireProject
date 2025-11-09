@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Interfaces\DeckRepositoryInterface;
 use App\Interfaces\FormatRepositoryInterface;
 use App\Models\Deck;
-use App\Repositories\DeckRepository;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -17,7 +17,7 @@ class DeckController extends Controller
 
     public function __construct(
 
-        private readonly DeckRepository $deckRepository,
+        private readonly DeckRepositoryInterface $deckRepository,
 
         private readonly FormatRepositoryInterface $formatRepository
 
@@ -29,9 +29,7 @@ class DeckController extends Controller
         $decks = $this->deckRepository->getForUser(Auth::user());
 
         return view('decks.index', [
-
             'decks' => $decks,
-
         ]);
 
     }
@@ -72,9 +70,7 @@ class DeckController extends Controller
 
     public function show(Deck $deck): View
     {
-
         return view('decks.show', ['deck' => $deck]);
-
     }
 
     public function edit(Deck $deck): View

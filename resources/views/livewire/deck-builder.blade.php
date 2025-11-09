@@ -1,4 +1,11 @@
-<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="space-y-4">
+    @if ($errorMessage)
+        <div class="rounded-md bg-red-100 border border-red-200 text-red-700 px-4 py-2">
+            {{ $errorMessage }}
+        </div>
+    @endif
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
     {{-- COLUNA DA ESQUERDA: BUSCA DE CARTAS --}}
     <div>
@@ -97,4 +104,5 @@
         </div>
     </div>
 
+    </div>
 </div>

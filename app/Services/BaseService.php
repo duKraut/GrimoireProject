@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Services;
+namespace App\Services;
 
-use App\Http\Repositories\BaseRepository;
-use App\Interface\Service;
+use App\Interfaces\Service;
+use App\Repositories\BaseRepository;
 
 abstract class BaseService implements Service
 {

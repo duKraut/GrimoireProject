@@ -19,13 +19,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        // $this->app->bind(CollectionEntryRepositoryInterface::class, CollectionEntryRepository::class);
-
-        // $this->app->bind(DeckRepositoryInterface::class, DeckRepository::class);
-
-        // $this->app->bind(FormatRepositoryInterface::class, FormatRepository::class);
-
-        // $this->app->bind(DeckCardRepositoryInterface::class, DeckCardRepository::class);
+        $this->app->bind(CollectionEntryRepositoryInterface::class, CollectionEntryRepository::class);
+        $this->app->bind(DeckRepositoryInterface::class, DeckRepository::class);
+        $this->app->bind(FormatRepositoryInterface::class, FormatRepository::class);
+        $this->app->bind(DeckCardRepositoryInterface::class, DeckCardRepository::class);
     }
 
     /**
