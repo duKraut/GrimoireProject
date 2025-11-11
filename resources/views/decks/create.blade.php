@@ -9,8 +9,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
-                    
-                    {{-- O formulário envia os dados (via POST) para a rota 'decks.store' --}}
+
                     <form method="POST" action="{{ route('decks.store') }}">
                         @csrf
 
@@ -24,7 +23,6 @@
                             <x-input-label for="format_id" :value="__('Formato')" />
                             <select name="format_id" id="format_id" class="block mt-1 w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
                                 <option value="">Selecione um formato</option>
-                                {{-- Aqui fazemos o loop nos formatos que o Controller buscou --}}
                                 @foreach ($formats as $format)
                                     <option value="{{ $format->id }}">{{ $format->name }} ({{ $format->platform }})</option>
                                 @endforeach

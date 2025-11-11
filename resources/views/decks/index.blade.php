@@ -8,19 +8,15 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             
-            {{-- Botão para Criar Novo Deck (ainda não funcional) --}}
             <div class="mb-4">
                 <a href="{{ route('decks.create') }}" class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-md">
                     Criar Novo Deck
                 </a>
             </div>
 
-            {{-- A Grelha de Decks --}}
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 
-                {{-- 1. Verificamos se a coleção de decks está vazia --}}
                 @forelse ($decks as $deck)
-                    {{-- 2. Se não estiver, mostramos um card para cada deck --}}
                     <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                         <div class="p-6">
                             <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">

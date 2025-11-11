@@ -6,7 +6,6 @@
         class="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"
     >
 
-    {{-- 1. Mostramos a secção de resultados se a lista NÃO estiver vazia --}}
     @if (count($results) > 0)
         <div class="mt-4 bg-white dark:bg-gray-700 rounded-lg shadow-lg p-4">
 
@@ -29,8 +28,7 @@
 
                         <button 
                             wire:click="addCard('{{ $card['id'] }}')"
-                            class="ml-4 px-3 py-1 bg-blue-500 hover:bg-blue-600 text-white rounded-md text-sm"
-                        >
+                            class="ml-4 px-3 py-1 bg-blue-500 hover:bg-blue-600 text-white rounded-md text-sm">
                             Adicionar
                         </button>
                     </li>
@@ -38,7 +36,6 @@
             </ul>
         </div>
     
-    {{-- 3. Se a busca tiver 3+ caracteres mas não houver resultados, mostramos a mensagem de "não encontrado" --}}
     @elseif (strlen($searchQuery) >= 3)
         <div class="mt-4 bg-white dark:bg-gray-700 rounded-lg shadow-lg p-4">
             <p class="text-gray-500 dark:text-gray-400">Nenhuma carta encontrada para "{{ $searchQuery }}".</p>

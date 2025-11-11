@@ -12,7 +12,7 @@
 
                     <form method="POST" action="{{ route('decks.update', $deck->id) }}">
                         @csrf
-                        @method('PUT') {{-- Importante para o Laravel entender que é uma atualização --}}
+                        @method('PUT')
 
                         <div>
                             <x-input-label for="name" :value="__('Nome do Deck')" />
