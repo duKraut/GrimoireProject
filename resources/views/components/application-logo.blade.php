@@ -1,4 +1,4 @@
 <img 
-    src="{{ asset('images/livro-de-feiticos.png') }}" 
+    src="{{ asset('images/magic-book.png') }}" 
     alt="Logo" 
-    {{ $attributes->merge(['class' => 'h-9 w-auto']) }}>
+    {{ $attributes->merge(['class' => 'w-auto']) }}>
