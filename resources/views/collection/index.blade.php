@@ -25,17 +25,33 @@
             </div>
         </div>
     </div>
-
+    
     @push('scripts')
     <script>
         document.addEventListener('livewire:initialized', () => {
             
             Livewire.on('card-added', (event) => {
-                alert(event[0]); 
+                Toastify({
+                    text: event[0],
+                    duration: 3000,
+                    gravity: "top",
+                    position: "right",
+                    style: {
+                        background: "linear-gradient(to right, #8750c7ff, #4c0c96ff)",
+                    }
+                }).showToast();
             });
 
             Livewire.on('card-error', (event) => {
-                alert(event[0]);
+                Toastify({
+                    text: event[0],
+                    duration: 3000,
+                    gravity: "top",
+                    position: "right",
+                    style: {
+                        background: "linear-gradient(to right, #ff5f6d, #ffc371)",
+                    }
+                }).showToast();
             });
         });
     </script>
