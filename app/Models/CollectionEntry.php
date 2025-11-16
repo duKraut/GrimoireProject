@@ -20,6 +20,9 @@ class CollectionEntry extends Model
         'quantity',
         'is_foil',
         'condition',
+        'card_name',
+        'card_type_line',
+        'card_image_uri',
     ];
 
     /**

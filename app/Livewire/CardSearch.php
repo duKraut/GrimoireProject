@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Interfaces\CollectionEntryRepositoryInterface;
+use App\Models\CollectionEntry;
 use App\Services\ScryfallApiService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -11,78 +12,74 @@ use Livewire\Component;
 class CardSearch extends Component
 {
     public string $searchQuery = '';
-    public array $results = [];
-    public string $searchTitle = ''; // Propriedade para guardar o título (ex: "Lançamentos Recentes")
 
-    /**
-     * O método mount() é executado UMA VEZ, quando o componente é carregado.
-     * É o local perfeito para buscar os nossos dados iniciais.
-     */
+    public array $results = [];
+
+    public string $searchTitle = '';
+
     public function mount()
     {
         $this->fetchRecentCards();
     }
 
-    /**
-     * Adiciona a carta à coleção.
-     */
-    public function addCard(string $scryfallId)
+    public function addCard(array $cardData)
     {
         $repository = app(CollectionEntryRepositoryInterface::class);
         $user = Auth::user();
 
-        $details = [
-            'scryfall_id' => $scryfallId,
-            'quantity' => 1,
-            'condition' => 'NM',
-            'is_foil' => false,
-        ];
-
         try {
-            $repository->create($details, $user);
-            $this->dispatch('card-added', 'Carta adicionada com sucesso!');
+            $existingEntry = CollectionEntry::where('user_id', $user->id)
+                ->where('scryfall_id', $cardData['id'])
+                ->first();
+
+            $message = '';
+
+            if ($existingEntry) {
+                $existingEntry->increment('quantity');
+                $message = 'Quantidade de "'.$existingEntry->card_name.'" atualizada para '.($existingEntry->quantity);
+
+            } else {
+                $details = [
+                    'scryfall_id' => $cardData['id'],
+                    'quantity' => 1,
+                    'condition' => 'NM',
+                    'is_foil' => false,
+                    'card_name' => $cardData['name'],
+                    'card_type_line' => $cardData['type_line'],
+                    'card_image_uri' => $cardData['image_uris']['small'] ?? null,
+                ];
+
+                $repository->create($details, $user);
+                $message = 'Carta adicionada: '.$cardData['name'];
+            }
+
+            $this->dispatch('card-added', $message);
 
         } catch (\Exception $e) {
-            $this->dispatch('card-error', 'Erro ao adicionar a carta.');
-            Log::error('Erro ao adicionar carta à coleção: ' . $e->getMessage());
+            $this->dispatch('card-error', 'Erro ao processar a carta.');
+            Log::error('Erro ao adicionar/incrementar carta: '.$e->getMessage());
         }
     }
 
-    /**
-     * Executado sempre que a propriedade $searchQuery é atualizada.
-     */
     public function updatedSearchQuery($value)
     {
-        // 1. Se o utilizador digitar 3+ caracteres, fazemos a busca dele
         if (strlen($value) >= 3) {
             $scryfallService = app(ScryfallApiService::class);
             $this->results = $scryfallService->searchCardsByName($value);
             $this->searchTitle = 'Resultados da Busca';
-        } 
-        // 2. Se ele apagar a busca (string vazia), mostramos os recentes novamente
-        elseif (empty($value)) { 
+        } elseif (empty($value)) {
             $this->fetchRecentCards();
-        }
-        // 3. Se tiver entre 1-2 caracteres, limpamos os resultados e não mostramos nada
-        else {
+        } else {
             $this->results = [];
             $this->searchTitle = '';
         }
     }
 
-    /**
-     * Busca as cartas mais recentes para o estado inicial.
-     * Criámos um método separado para isto para o podermos reutilizar.
-     */
     private function fetchRecentCards()
     {
-        // Usamos app() para obter o serviço
         $scryfallService = app(ScryfallApiService::class);
         $this->searchTitle = 'Lançamentos Recentes';
-        
-        // Esta é uma query especial do Scryfall:
-        // 'r:r or r:m' -> Raridade rara ou mítica
-        // 'order:released' -> Ordenar pela data de lançamento (mais novas primeiro)
+
         $this->results = $scryfallService->searchCardsByName(
             'q=(r:r or r:m) order:released'
         );

@@ -27,7 +27,7 @@
                         </div>
 
                         <button 
-                            wire:click="addCard('{{ $card['id'] }}')"
+                            wire:click="addCard({{ json_encode($card) }})"
                             class="ml-4 px-3 py-1 bg-blue-500 hover:bg-blue-600 text-white rounded-md text-sm">
                             Adicionar
                         </button>
