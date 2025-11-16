@@ -6,13 +6,13 @@ use Illuminate\Contracts\Auth\Authenticatable;
 
 interface CollectionEntryRepositoryInterface
 {
-    /**
-     * Adiciona uma carta à coleção de um utilizador.
-     *
-     * @param array $details Os dados da entrada da coleção (scryfall_id, quantity, etc.)
-     * @param Authenticatable $user O utilizador autenticado
-     * @return \App\Models\CollectionEntry
-     */
     public function create(array $details, Authenticatable $user);
 
+    public function getUserEntriesPaginated(int $userId, int $perPage = 10);
+
+    public function incrementQuantity(int $entryId);
+
+    public function decrementQuantity(int $entryId);
+
+    public function deleteEntry(int $entryId);
 }

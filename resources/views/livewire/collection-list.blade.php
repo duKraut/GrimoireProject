@@ -42,8 +42,7 @@
                 </div>
 
                 <button 
-                    wire:click="removeCard({{ $entry->id }})"
-                    wire:confirm="Tem certeza que deseja remover TODAS as cópias desta carta da coleção?"
+                    wire:click="confirmRemoval({{ $entry->id }})"
                     class="ml-4 px-3 py-1 bg-red-500 hover:bg-red-600 text-white rounded-md text-sm self-center">
                     Remover
                 </button>
@@ -54,6 +53,31 @@
             </li>
         @endforelse
     </ul>
+
+    @if($showDeleteModal)
+    <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+        <div class="bg-gray-800 text-gray-100 p-6 rounded-2xl w-full max-w-md shadow-xl">
+            <h2 class="text-xl font-semibold mb-3">Excluir Carta</h2>
+            <p class="text-sm text-gray-300 mb-6">
+                Tem certeza que deseja excluir todas as cópias desta carta? Esta ação não pode ser desfeita.
+            </p>
+
+            <div class="flex justify-end gap-3">
+                <button 
+                    wire:click="cancelRemoval"
+                    class="px-4 py-2 rounded-full bg-gray-600 hover:bg-gray-500 text-white">
+                    Cancelar
+                </button>
+
+                <button 
+                    wire:click="deleteCard"
+                    class="px-4 py-2 rounded-full bg-red-400 hover:bg-red-500 text-gray-900 font-medium">
+                    Excluir
+                </button>
+            </div>
+        </div>
+    </div>
+    @endif
 
     <div class="mt-6">
         {{ $entries->links() }}

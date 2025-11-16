@@ -54,6 +54,7 @@ class CardSearch extends Component
             }
 
             $this->dispatch('card-added', $message);
+            $this->dispatch('refresh-collection');
 
         } catch (\Exception $e) {
             $this->dispatch('card-error', 'Erro ao processar a carta.');

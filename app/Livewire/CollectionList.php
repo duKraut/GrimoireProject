@@ -2,7 +2,8 @@
 
 namespace App\Livewire;
 
-use App\Models\CollectionEntry;
+use App\Interfaces\CollectionEntryRepositoryInterface;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -11,63 +12,64 @@ class CollectionList extends Component
 {
     use WithPagination;
 
-    #[On('card-added')]
-    public function refreshCollection()
+    protected $paginationTheme = 'tailwind';
+
+    public bool $showDeleteModal = false;
+
+    public ?int $cardToDelete = null;
+
+    #[On('refresh-collection')]
+    public function reloadEntries()
     {
         $this->resetPage();
     }
 
-    /**
-     * NOVO: Incrementa a quantidade da carta.
-     */
-    public function increment($entryId)
+    public function confirmRemoval(int $entryId)
     {
-        $entry = CollectionEntry::where('id', $entryId)
-            ->where('user_id', auth()->id())
-            ->first();
-
-        if ($entry) {
-            $entry->increment('quantity');
-        }
+        $this->cardToDelete = $entryId;
+        $this->showDeleteModal = true;
     }
 
-    /**
-     * NOVO: Decrementa a quantidade, mas para em 1.
-     */
-    public function decrement($entryId)
+    public function cancelRemoval()
     {
-        $entry = CollectionEntry::where('id', $entryId)
-            ->where('user_id', auth()->id())
-            ->first();
-
-        // Só decrementa se a quantidade for maior que 1
-        if ($entry && $entry->quantity > 1) {
-            $entry->decrement('quantity');
-        }
+        $this->showDeleteModal = false;
+        $this->cardToDelete = null;
     }
 
-    /**
-     * Remove um item da coleção (este já existia).
-     */
-    public function removeCard($collectionEntryId)
+    public function deleteCard()
     {
-        $entry = CollectionEntry::where('id', $collectionEntryId)
-            ->where('user_id', auth()->id())
-            ->first();
-
-        if ($entry) {
-            $entry->delete();
+        if ($this->cardToDelete) {
+            $this->removeCard($this->cardToDelete);
         }
+
+        $this->showDeleteModal = false;
+        $this->cardToDelete = null;
     }
 
-    /**
-     * Renderiza o componente.
-     */
+    public function removeCard(int $entryId)
+    {
+        app(CollectionEntryRepositoryInterface::class)
+            ->deleteEntry($entryId);
+
+        $this->dispatch('card-removed', 'Carta removida da coleção.');
+    }
+
+    public function increment(int $entryId)
+    {
+        app(CollectionEntryRepositoryInterface::class)
+            ->incrementQuantity($entryId);
+    }
+
+    public function decrement(int $entryId)
+    {
+        app(CollectionEntryRepositoryInterface::class)
+            ->decrementQuantity($entryId);
+    }
+
     public function render()
     {
-        $entries = CollectionEntry::where('user_id', auth()->id())
-            ->latest()
-            ->paginate(10);
+        $entries = app(CollectionEntryRepositoryInterface::class)
+            ->getUserEntriesPaginated(Auth::id(), 10);
 
         return view('livewire.collection-list', [
             'entries' => $entries,
