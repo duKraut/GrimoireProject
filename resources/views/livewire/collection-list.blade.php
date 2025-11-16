@@ -1,24 +1,12 @@
 <div>
-    {{-- Feedback de carregamento (bom para UX) --}}
-    <div wire:loading.delay class="w-full text-center text-gray-500 dark:text-gray-400">
-        Carregando coleção...
-    </div>
-
-    {{-- A lista de cartas --}}
     <ul wire:loading.remove class="divide-y divide-gray-200 dark:divide-gray-600">
         
-        {{-- O @forelse que está dando erro (porque $entries não existe) --}}
         @forelse ($entries as $entry)
-            {{-- 
-              Isto assume que você já salvou 'card_name', 'card_image_uri', etc.
-              no banco de dados, como fizemos no "Método 1".
-            --}}
             <li wire:key="{{ $entry->id }}" class="py-3 flex items-center">
                 
                 @if (isset($entry->card_image_uri))
                     <img src="{{ $entry->card_image_uri }}" alt="{{ $entry->card_name }}" class="w-16 h-auto rounded-md mr-4">
                 @else
-                    {{-- Placeholder se não houver imagem --}}
                     <div class="w-16 h-24 bg-gray-300 dark:bg-gray-600 rounded-md mr-4 flex items-center justify-center">
                         <span class="text-xs text-gray-500 dark:text-gray-400">Sem img</span>
                     </div>
@@ -38,14 +26,12 @@
                 </button>
             </li>
         @empty
-            {{-- Mensagem para quando a coleção estiver vazia --}}
             <li class="py-3">
                 <p class="text-center text-gray-500 dark:text-gray-400">Sua coleção está vazia. Use a busca acima para adicionar cartas.</p>
             </li>
         @endforelse
     </ul>
 
-    {{-- Links da Paginação --}}
     <div class="mt-6">
         {{ $entries->links() }}
     </div>

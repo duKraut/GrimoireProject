@@ -8,15 +8,10 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 
-                {{-- SEU COMPONENTE DE BUSCA --}}
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <livewire:card-search />
                 </div>
 
-                {{-- 
-                ADICIONE ISSO 
-                Uma divisão e o novo componente da lista 
-                --}}
                 <div class="border-t border-gray-200 dark:border-gray-700"></div>
 
                 <div class="p-6 text-gray-900 dark:text-gray-100">
@@ -30,8 +25,7 @@
             </div>
         </div>
     </div>
-    
-    {{-- Seus scripts JS podem permanecer como estão --}}
+
     @push('scripts')
     <script>
         document.addEventListener('livewire:initialized', () => {
