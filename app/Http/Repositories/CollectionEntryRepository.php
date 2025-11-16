@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Http\Repositories;
 
 use App\Interfaces\CollectionEntryRepositoryInterface;
 use App\Models\CollectionEntry;

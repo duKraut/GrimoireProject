@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Http\Repositories;
 
 use App\Interfaces\FormatRepositoryInterface;
 use App\Models\Format;
