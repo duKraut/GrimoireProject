@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('collection_entries', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('card_id')->constrained()->onDelete('cascade');
+            $table->uuid('scryfall_id');
             $table->unsignedInteger('quantity')->default(1);
             $table->boolean('is_foil')->default(false);
-            $table->enum('condition', ['M', 'NM', 'LP', 'MP', 'HP', 'DMG']);
+            $table->enum('condition', ['M', 'NM', 'LP', 'MP', 'HP', 'DMG'])->default('NM');
             $table->timestamps();
         });
     }

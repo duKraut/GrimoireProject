@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('deck_cards', function (Blueprint $table) {
             $table->id();
             $table->foreignId('deck_id')->constrained()->onDelete('cascade');
-            $table->foreignId('card_id')->constrained()->onDelete('cascade');
+            $table->uuid('scryfall_id');
             $table->unsignedInteger('quantity');
-            $table->enum('board', ['Main', 'Side']);
+            $table->enum('board', ['Main', 'Side'])->default('Main');
             $table->timestamps();
         });
     }
