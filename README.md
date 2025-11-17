@@ -22,11 +22,11 @@ Uma aplicação web desenvolvida com Laravel que oferece gerenciamento completo 
 
 ### Pré-requisitos
 
-Certifique-se de ter instalado:
-PHP 8.2+ [Download](https://www.php.net/downloads.php)
-Composer [Download](https://getcomposer.org)
-Node.js (LTS) [Download](https://nodejs.org/en/download)
-NPM (incluído com Node.js)
+# Certifique-se de ter instalado:
+> PHP 8.2+ [Download](https://www.php.net/downloads.php)
+> Composer [Download](https://getcomposer.org)
+> Node.js (LTS) [Download](https://nodejs.org/en/download)
+> NPM (incluído com Node.js)
 
 ### 1) Clonar o Repositório
 
