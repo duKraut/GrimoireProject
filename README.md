@@ -37,7 +37,7 @@ cd GrimoireProject
 
 ### 2) Instalar o xampp
 
-Rode a instalação do Xampp e ao final, vá nas configurações do **Apache** e pesquise por ";extension=zip" e remova o ";" entãop salve novamente
+Rode a instalação do Xampp e ao final, vá nas configurações do **Apache** e pesquise por ";extension=zip" e remova o ";" então salve novamente
 
 ### 3) Instalar o PHP
 
