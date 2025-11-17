@@ -59,12 +59,13 @@
             <ul class="divide-y divide-gray-200 dark:divide-gray-600">
                 @forelse ($mainDeckCards as $card)
                     <li wire:key="main-{{ $card['entry_id'] }}" class="py-2 flex items-center">
-                        {{-- Agora mostramos o nome da carta, que está em $card['details']['name'] --}}
                         <span class="text-gray-900 dark:text-gray-100">{{ $card['quantity'] }}x {{ $card['details']['name'] }}</span>
                         
-                        <div class="ml-auto">
-                            <button class="text-sm text-red-500 hover:text-red-300">Apagar</button>
-                        </div>
+                        <button 
+                            wire:click="removeCard('{{ $card['entry_id'] }}')"
+                            class="text-sm text-red-500 hover:text-red-300">
+                            Apagar
+                        </button>
                     </li>
                 @empty
                     <p class="text-gray-500 dark:text-gray-400">Seu deck principal está vazio.</p>
@@ -82,9 +83,11 @@
                     <li wire:key="side-{{ $card['entry_id'] }}" class="py-2 flex items-center">
                         <span class="text-gray-900 dark:text-gray-100">{{ $card['quantity'] }}x {{ $card['details']['name'] }}</span>
                         
-                        <div class="ml-auto">
-                            <button class="text-sm text-red-500 hover:text-red-300">Apagar</button>
-                        </div>
+                        <button 
+                            wire:click="removeCard('{{ $card['entry_id'] }}')"
+                            class="text-sm text-red-500 hover:text-red-300">
+                            Apagar
+                        </button>
                     </li>
                 @empty
                     <p class="text-gray-500 dark:text-gray-400">Seu sideboard está vazio.</p>

@@ -10,7 +10,6 @@ class FormatRepository implements FormatRepositoryInterface
 {
     public function all(): Collection
     {
-        // Usamos o orderBy para garantir que a lista venha por ordem alfabética
         return Format::orderBy('name', 'asc')->get();
     }
 }

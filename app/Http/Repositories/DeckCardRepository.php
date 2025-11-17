@@ -11,13 +11,11 @@ class DeckCardRepository implements DeckCardRepositoryInterface
 {
     public function getForDeck(Deck $deck): Collection
     {
-        // Usamos a relação para buscar todas as cartas do deck
         return $deck->deckCards()->get();
     }
 
     public function addCard(Deck $deck, array $data): DeckCard
     {
-        // Usamos a relação para criar a entrada já associada ao deck
         return $deck->deckCards()->create($data);
     }
 

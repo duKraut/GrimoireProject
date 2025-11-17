@@ -50,8 +50,6 @@ class DeckController extends Controller
     public function store(Request $request): RedirectResponse
     {
 
-        // 1. Validamos os dados (igual a antes)
-
         $validatedData = $request->validate([
 
             'name' => 'required|string|max:255',
@@ -76,15 +74,9 @@ class DeckController extends Controller
     public function edit(Deck $deck): View
     {
 
-        // 1. Verificamos se o utilizador logado é o dono do deck (Segurança)
-
         $this->authorize('update', $deck);
 
-        // 2. Buscamos todos os formatos para o dropdown
-
         $formats = $this->formatRepository->all();
-
-        // 3. Retornamos a view de edição, passando o deck e os formatos
 
         return view('decks.edit', [
 
@@ -99,11 +91,7 @@ class DeckController extends Controller
     public function update(Request $request, Deck $deck): RedirectResponse
     {
 
-        // 1. Verificamos se o utilizador logado é o dono do deck (Segurança)
-
         $this->authorize('update', $deck);
-
-        // 2. Validamos os dados que vieram do formulário
 
         $validatedData = $request->validate([
 
@@ -115,11 +103,7 @@ class DeckController extends Controller
 
         ]);
 
-        // 3. Usamos o nosso repositório para atualizar o deck
-
         $this->deckRepository->update($deck->id, $validatedData);
-
-        // 4. Redirecionamos o utilizador de volta para a lista de decks
 
         return redirect()->route('decks.index')->with('success', 'Deck atualizado com sucesso!');
 
@@ -128,15 +112,9 @@ class DeckController extends Controller
     public function destroy(Deck $deck): RedirectResponse
     {
 
-        // 1. Verificamos se o utilizador logado é o dono do deck (Segurança)
-
         $this->authorize('delete', $deck);
 
-        // 2. Usamos o nosso repositório para apagar
-
         $this->deckRepository->delete($deck->id);
-
-        // 3. Redirecionamos o utilizador de volta para a lista de decks
 
         return redirect()->route('decks.index')->with('success', 'Deck apagado com sucesso!');
 
